@@ -1,0 +1,26 @@
+<div class="container">
+  <h1 class="title">Home Page</h1>
+
+  <div *ngIf="users$ | async as users; else loading" class="user-container">
+    <ng-container *ngIf="users.length > 0; else noUsers">
+      <h2 class="subtitle">User List</h2>
+      <ul class="user-list">
+        <li *ngFor="let user of users" class="user-item">
+          <div class="user-info">
+            <span class="user-name">{{ user.userName }}</span>
+            <span class="user-date">Created At: {{ user.createdAt | date:'short' }}</span>
+          </div>
+        </li>
+      </ul>
+    </ng-container>
+    <ng-template #noUsers>
+      <p class="no-users-message">No users found.</p>
+    </ng-template>
+  </div>
+
+  <ng-template #loading>
+    <div class="loading">
+      <p>Loading...</p>
+    </div>
+  </ng-template>
+</div>

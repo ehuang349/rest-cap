@@ -1,0 +1,74 @@
+// Home Page Styles
+
+$primary-color: #333;
+$secondary-color: #555;
+$tertiary-color: #888;
+$border-color: #ddd;
+$font-stack: Arial, sans-serif;
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: $font-stack;
+
+  .title {
+    text-align: center;
+    color: $primary-color;
+    margin-bottom: 20px;
+  }
+
+  .user-container {
+    margin-top: 20px;
+
+    .subtitle {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: $secondary-color;
+    }
+
+    .user-list {
+      list-style: none;
+      padding: 0;
+
+      .user-item {
+        padding: 10px;
+        border-bottom: 1px solid $border-color;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .user-info {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+
+          .user-name {
+            font-weight: bold;
+            flex: 1;
+            text-align: left;
+          }
+
+          .user-date {
+            color: $tertiary-color;
+            font-size: 0.875rem;
+            text-align: right;
+            flex-shrink: 0;
+          }
+        }
+      }
+    }
+
+    .no-users-message {
+      text-align: center;
+      color: $tertiary-color;
+    }
+  }
+
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+  }
+}
