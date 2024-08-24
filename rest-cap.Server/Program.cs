@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using rest_cap.Server.Entities;
+using rest_cap.Server.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,8 @@ builder.Services.AddDbContext<StorageContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddScoped<IApiKeyValidator, ApiKeyValidatorHelper>();
+builder.Services.AddScoped<ApiAccessAuthorizeFilter>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

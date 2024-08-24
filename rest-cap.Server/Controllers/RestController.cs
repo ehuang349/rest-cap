@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using rest_cap.Server.Entities;
+using rest_cap.Server.Helpers;
 
 namespace rest_cap.Server.Controllers
 {
@@ -21,6 +22,7 @@ namespace rest_cap.Server.Controllers
 
         [HttpGet]
         [Route("rest/get_users")]
+        [ServiceFilter(typeof(ApiAccessAuthorizeFilter))]
         public async Task<IActionResult> GetUsers() {
             try
             {
