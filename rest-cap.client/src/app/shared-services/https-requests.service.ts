@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { User } from '../common/models.interface';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { PaginatedUserResponse } from '../common/models.interface';
 import { env } from '../../env/env';
 import { API_CHILD_ROUTES } from '../common/constants';
 
@@ -12,22 +12,33 @@ export class HttpsRequestsService {
   constructor(private http: HttpClient) { }
 
 
-  getUsers(): Observable<User[]> {
+  getUsers(page: number = 1, pageSize: number = 10, userName?: string, email?: string): Observable<PaginatedUserResponse> {
     const apiUrl = `${env.apiBaseUrl}${API_CHILD_ROUTES.GET_USERS}`;
     const headers = new HttpHeaders({
       'api-key': env.apiKey
     });
-    return this.http.get<User[]>(apiUrl, { headers }).pipe(
+
+    let params = new HttpParams().set('page', page.toString()).set('pageSize', pageSize.toString());
+
+    if (userName) {
+      params = params.set('userName', userName);
+    }
+
+    if (email) {
+      params = params.set('email', email);
+    }
+
+    return this.http.get<PaginatedUserResponse>(apiUrl, { headers, params }).pipe(
       tap({
-        next: (users) => {
-          console.log('Fetched users:', users);
-          const sortedUsers = users.sort((a, b) => a.userName.localeCompare(b.userName));
-          console.log('Sorted Users:', sortedUsers);
+        next: (response) => {
+          console.log('Fetched users:', response.users);
+          console.log('Pagination info:', response.totalCount, response.page, response.pageSize)
         },
         error: (error) => {
-          console.error('ferror fetching users', error);
+          console.error('Error fetching users', error);
         }
       })
     );
+
   }
 }

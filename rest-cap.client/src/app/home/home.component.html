@@ -11,7 +11,7 @@
   </div>
 
   <!-- Display Filtered Users -->
-  <div *ngIf="filteredUsers$ | async as users; else loading" class="user-container">
+  <div *ngIf="users$ | async as users; else loading" class="user-container">
     <ng-container *ngIf="users.length > 0; else noUsers">
       <h2 class="subtitle">User List</h2>
       <ul class="user-list">
@@ -27,6 +27,24 @@
     <ng-template #noUsers>
       <p class="no-users-message">No users found.</p>
     </ng-template>
+  </div>
+
+  <!-- Pagination Controls -->
+  <div class="pagination-controls">
+    <button (click)="onPageChange(page - 1)" [disabled]="page === 1">Previous</button>
+    <span>Page {{ page }} of {{ totalPages$ | async }}</span>
+    <button (click)="onPageChange(page + 1)" [disabled]="page === (totalPages$ | async)">Next</button>
+
+    <!-- Page Number Input Field -->
+    <div class="page-input-container">
+      <input type="number"
+             [(ngModel)]="inputPage"
+             (ngModelChange)="onPageNumberChange($event)"
+             min="1"
+             [max]="totalPages$ | async"
+             class="page-input"
+             placeholder="Go to page" />
+    </div>
   </div>
 
   <ng-template #loading>

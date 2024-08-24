@@ -13,4 +13,12 @@ namespace rest_cap.Server.Models
         public string PasswordHash { get; set; }
         public DateTime CreatedAt { get; set; }
     }
+
+    public class UserDTO
+    {
+        public int SysId { get; set; }
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public DateTime CreatedAt { get; set; }
+    }
 }

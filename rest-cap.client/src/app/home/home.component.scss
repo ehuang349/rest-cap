@@ -14,6 +14,7 @@
 .subtitle {
   font-size: 1.5em;
   margin-bottom: 15px;
+  text-align: center;
 }
 
 .user-container {
@@ -21,6 +22,7 @@
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 5px;
 }
 
 .user-list {
@@ -66,4 +68,40 @@
 .loading {
   text-align: center;
   color: #555;
+}
+
+.search-container {
+  text-align: center;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px; // Adjust margin as needed
+  padding: 10px; // Add padding for better spacing
+  // Style individual buttons
+  button {
+    background-color: #007bff; // Button background color
+    color: #fff; // Button text color
+    border: none; // Remove default border
+    border-radius: 4px; // Rounded corners
+    padding: 8px 16px; // Padding inside buttons
+    margin: 0 5px; // Space between buttons
+    cursor: pointer; // Change cursor on hover
+    // Hover effect
+    &:hover {
+      background-color: #0056b3; // Darker background on hover
+    }
+    // Disabled button style
+    &:disabled {
+      background-color: #d6d6d6; // Light gray background
+      cursor: not-allowed; // Change cursor to indicate disabled
+    }
+  }
+  // Style the page number display
+  span {
+    font-size: 16px; // Font size for the page number display
+    margin: 0 10px; // Margin around the page number display
+  }
 }

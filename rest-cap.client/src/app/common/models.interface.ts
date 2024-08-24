@@ -4,3 +4,10 @@ export interface User {
   email: string;
   createdAt: Date;
 }
+
+export interface PaginatedUserResponse {
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  users: User[];
+}
