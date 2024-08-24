@@ -1,7 +1,17 @@
 <div class="container">
   <h1 class="title">Home Page</h1>
 
-  <div *ngIf="users$ | async as users; else loading" class="user-container">
+  <!-- Search Input Field -->
+  <div class="search-container">
+    <input type="text"
+           placeholder="Search users..."
+           [(ngModel)]="searchQuery"
+           (ngModelChange)="onSearch()"
+           class="search-input" />
+  </div>
+
+  <!-- Display Filtered Users -->
+  <div *ngIf="filteredUsers$ | async as users; else loading" class="user-container">
     <ng-container *ngIf="users.length > 0; else noUsers">
       <h2 class="subtitle">User List</h2>
       <ul class="user-list">

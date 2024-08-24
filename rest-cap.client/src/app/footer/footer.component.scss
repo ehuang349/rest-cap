@@ -1,0 +1,58 @@
+.footer {
+  background-color: #333;
+  color: #fff;
+  padding: 20px 0; /* Add padding to the top and bottom of the footer */
+  width: 100%;
+  text-align: center;
+}
+
+.container {
+  max-width: 1200px; /* Set a max-width for better alignment */
+  margin: 0 auto; /* Center the container */
+  padding: 0 20px; /* Add padding to the left and right */
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Wrap items on smaller screens */
+}
+
+.footer-section {
+  flex: 1;
+  margin: 0 15px; /* Add margin between sections */
+  padding: 10px; /* Add padding inside each section */
+}
+
+.footer-section h4 {
+  margin-bottom: 10px; /* Add space below the heading */
+  font-size: 1.2em; /* Adjust font size */
+}
+
+.footer-section p, .footer-section ul {
+  margin: 0;
+  padding: 0;
+}
+
+.footer-section ul {
+  list-style: none; /* Remove default list styling */
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 8px; /* Add space between list items */
+}
+
+.footer-section ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+  text-decoration: underline; /* Add underline on hover for links */
+}
+
+.footer-bottom {
+  margin-top: 20px; /* Add space above the bottom section */
+  padding: 10px; /* Add padding to the bottom section */
+}

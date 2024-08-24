@@ -19,8 +19,14 @@ export class HttpsRequestsService {
     });
     return this.http.get<User[]>(apiUrl, { headers }).pipe(
       tap({
-        next: (users) => console.log('Fetched users:', users),
-        error: (error) => console.error('ferror fetching users', error)
+        next: (users) => {
+          console.log('Fetched users:', users);
+          const sortedUsers = users.sort((a, b) => a.userName.localeCompare(b.userName));
+          console.log('Sorted Users:', sortedUsers);
+        },
+        error: (error) => {
+          console.error('ferror fetching users', error);
+        }
       })
     );
   }
