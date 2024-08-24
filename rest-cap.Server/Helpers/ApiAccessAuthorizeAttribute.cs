@@ -5,7 +5,7 @@ namespace rest_cap.Server.Helpers
 {
     public class ApiAccessAuthorizeFilter : IAsyncActionFilter
     {
-        private const string ApiKeyHeaderName = "X-Api-Key";
+        private const string ApiKeyHeaderName = "api-key";
         private readonly IApiKeyValidator _apiKeyValidator;
 
         public ApiAccessAuthorizeFilter(IApiKeyValidator apiKeyValidator)
