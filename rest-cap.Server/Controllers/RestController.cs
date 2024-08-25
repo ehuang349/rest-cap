@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using rest_cap.Server.Entities;
 using rest_cap.Server.Helpers;
@@ -27,6 +28,7 @@ namespace rest_cap.Server.Controllers
         [HttpGet]
         [Route("rest/get_users")]
         [ServiceFilter(typeof(ApiAccessAuthorizeFilter))]
+        [EnableRateLimiting("GlobalRateLimit")]
         public async Task<IActionResult> GetUsers([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string userName = null, [FromQuery] string email = null) {
             try
             {
@@ -34,12 +36,16 @@ namespace rest_cap.Server.Controllers
 
                 if (!string.IsNullOrEmpty(userName))
                 {
-                    usersQuery = usersQuery.Where(u => u.UserName.Contains(userName));
+                    var originalList = usersQuery;
+                    var filteredUsers = usersQuery.Where(u => u.UserName.Contains(userName));
+                    usersQuery = filteredUsers != null && filteredUsers.Count() > 0 ? filteredUsers : usersQuery;
                 }
 
                 if (!string.IsNullOrEmpty(email))
                 {
-                    usersQuery = usersQuery.Where(u => u.Email.Contains(email));
+                    var originalList = usersQuery;
+                    var filteredUsers = usersQuery.Where(u => u.Email.Contains(email));
+                    usersQuery = filteredUsers != null && filteredUsers.Count() > 0 ? filteredUsers : usersQuery;
                 }
 
                 var totalUsers = await usersQuery.CountAsync();

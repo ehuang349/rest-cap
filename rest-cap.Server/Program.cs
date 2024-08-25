@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using rest_cap.Server.Entities;
 using rest_cap.Server.Helpers;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,17 @@ builder.Services.AddDbContext<StorageContext>(options =>
 builder.Services.AddScoped<IApiKeyValidator, ApiKeyValidatorHelper>();
 builder.Services.AddScoped<ApiAccessAuthorizeFilter>();
 
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter(policyName: "GlobalRateLimit", option =>
+    {
+        option.PermitLimit = 10;
+        option.Window = TimeSpan.FromMinutes(1);
+        option.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        option.QueueLimit = 5;
+    });
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -32,6 +45,9 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+app.UseRateLimiter();
+app.UseMiddleware<RateLimitMiddleware>();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();

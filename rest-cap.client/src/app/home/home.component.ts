@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpsRequestsService } from '../shared-services/https-requests.service';
 import { PaginatedUserResponse, User } from '../common/models.interface';
-import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
-import { map, debounceTime, switchMap, tap } from 'rxjs/operators';
+import { Observable, BehaviorSubject, combineLatest, of, Subject } from 'rxjs';
+import { map, debounceTime, switchMap, tap, catchError } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -14,17 +14,21 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   users$: Observable<User[]> = new Observable<User[]>();
   totalPages$: Observable<number> = of(1); // Initialize with 1
   totalUsers$: Observable<number> = of(0); // Initialize with 0
+
   private searchQuerySubject = new BehaviorSubject<string>('');
   private pageSubject = new BehaviorSubject<number>(1);
+  private destroy$ = new Subject<void>();
+
   searchQuery: string = '';
   pageSize: number = 10;
   page: number = 1;
   inputPage: number = 1;
 
+  
   constructor(private request: HttpsRequestsService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
@@ -49,7 +53,7 @@ export class HomeComponent implements OnInit {
         this.totalUsers$ = of(response.totalCount);
         this.totalPages$ = of(Math.ceil(response.totalCount / this.pageSize));
         this.users$ = of(response.users);
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       }),
       map(response => response.users)
     );
@@ -75,7 +79,7 @@ export class HomeComponent implements OnInit {
       tap(page => {
         this.page = page;
         this.pageSubject.next(page);
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       })
     ).subscribe();
   }
@@ -94,8 +98,13 @@ export class HomeComponent implements OnInit {
         this.page = page;
         this.inputPage = page; // Update the page input field
         this.pageSubject.next(page);
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       })
     ).subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
